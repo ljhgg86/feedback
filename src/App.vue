@@ -46,7 +46,7 @@ export default {
         Uid=null;
       }
       var temparr={Uid:Uid,Mobile:Mobile,NickName:NickName,UserAvatar:UserAvatar};
-      var temparr={Uid:491574,Mobile:"13715966381",NickName:"用户",UserAvatar:"http://yao.cutv.com/uc_server/data/avatar/000/49/49/52_avatar_middle.jpg?t=1540520661049"};
+      /*var temparr={Uid:491574,Mobile:"13715966381",NickName:"用户",UserAvatar:"http://yao.cutv.com/uc_server/data/avatar/000/49/49/52_avatar_middle.jpg?t=1540520661049"};*/
       this.$store.commit('setUserInfo',temparr);
     },
   }
@@ -54,8 +54,9 @@ export default {
 </script>
 
 <style>
-html {
+html,body {
   font-size: 17px;
+  height: 100%;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

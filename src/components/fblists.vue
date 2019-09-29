@@ -1,5 +1,5 @@
 <template>
-  <div class="fblists" id="fblists" v-on:scroll="testScroll()">
+  <div class="fblists" id="fblists" @scroll="testScroll($event)">
     <div class="titleLine1">
       <div class="titleitem1" @click="onClickLeft"><van-icon name="arrow-left" size="22px" color="#fff"/>
       </div>
@@ -20,7 +20,7 @@
   	  :finished="finished"
   	  @load="onLoad"
   	>
-      <div class="fblistitemclass" v-for="(listitem,key) in list" :key="key" @click="panel(listitem.user_id)"
+      <div class="fblistitemclass" v-for="(listitem,key) in list" :key="key" @click="panel(listitem.user_id,key)"
       >
         <div class="fblistitem1">{{ listitem.nickname }}</div>
         <div  class="fblistitem2">
@@ -49,7 +49,8 @@ export default {
       page:0,
       searchPage:0,
       searchFlag:false,
-      homeTop:0
+      homeTop:0,
+      listIdClicked:-1
     };
   },
   computed:{
@@ -61,19 +62,22 @@ export default {
     //this.typeid=this.$route.query.typeid;
   },
   mounted:function(){},
-  // activated(){
-  //   console.log('activated home');
-  //   document.getElementById('app').scrollTop = this.homeTop || 0;
-  // },
-  // beforeRouteLeave (to, from, next) {
-  //   let app = document.getElementById('app');
-  //   console.log(app.scrollTop);
-  //   this.homeTop = app.scrollTop || 0;
-  //   next()
-  // },
+  activated(){
+    document.getElementById('fblists').scrollTop = this.homeTop || 0;
+    if(this.listIdClicked>-1){
+      this.list[this.listIdClicked].count = 0;
+    }
+  },
+  deactivated(){
+  },
+  beforeRouteLeave (to, from, next) {
+    let app = document.getElementById("fblists");
+    this.homeTop = app.scrollTop || 0;
+    next()
+  },
   methods:{
-    testScroll(){
-      console.log("aaa");
+    testScroll(e){
+      //console.log(e.target.scrollTop);
     },
     onClickLeft() {
       this.$router.go(-1);
@@ -119,7 +123,8 @@ export default {
           this.loading = false;
         }.bind(this));
     },
-    panel:function(userid){
+    panel:function(userid,key){
+      this.listIdClicked = key;
       this.$router.push({path:'/panel', query:{id:userid}});
     },
     onChange:function(){}
@@ -131,6 +136,10 @@ export default {
 <style scoped>
 .van-nav-bar{
   background-color: #f2f2f2;
+}
+.fblists{
+  height:100%;
+  overflow-y: scroll;
 }
 .van-list{
   margin-top: 80px;
